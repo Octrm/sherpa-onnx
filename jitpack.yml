@@ -13,6 +13,14 @@ before_install:
   # Switch back to JDK 17 for the build
   - sdk install java 17.0.3-tem
   - sdk use java 17.0.3-tem
+  # Download microsoft onnxruntime AAR and extract classes.jar for Java API
+  - |
+    mkdir -p android/SherpaOnnxAar/sherpa_onnx/libs
+    cd /tmp
+    curl -sL -o onnxruntime-android-1.26.0.aar https://repo1.maven.org/maven2/com/microsoft/onnxruntime/onnxruntime-android/1.26.0/onnxruntime-android-1.26.0.aar
+    unzip -o onnxruntime-android-1.26.0.aar classes.jar
+    mv classes.jar ${OLDPWD}/android/SherpaOnnxAar/sherpa_onnx/libs/onnxruntime-classes.jar
+    cd ${OLDPWD}
   # Build native libraries and copy to AAR jniLibs
   - |
     export ANDROID_NDK=$ANDROID_HOME/ndk/27.0.11718014

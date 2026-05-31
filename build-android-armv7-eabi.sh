@@ -102,9 +102,9 @@ elif [ "$BUILD_SHARED_LIBS" == ON ]; then
   if [ ! -f $onnxruntime_version/jni/armeabi-v7a/libonnxruntime.so ]; then
     mkdir -p $onnxruntime_version
     pushd $onnxruntime_version
-    wget -c -q https://github.com/csukuangfj/onnxruntime-libs/releases/download/v${onnxruntime_version}/onnxruntime-android-${onnxruntime_version}.zip
-    unzip onnxruntime-android-${onnxruntime_version}.zip
-    rm onnxruntime-android-${onnxruntime_version}.zip
+    wget -c -q https://repo1.maven.org/maven2/com/microsoft/onnxruntime/onnxruntime-android/${onnxruntime_version}/onnxruntime-android-${onnxruntime_version}.aar
+    unzip onnxruntime-android-${onnxruntime_version}.aar
+    rm onnxruntime-android-${onnxruntime_version}.aar
     popd
   fi
 
@@ -192,6 +192,9 @@ make -j4
 make install/strip
 if [ "$BUILD_SHARED_LIBS" == ON ]; then
   cp -fv "$SHERPA_ONNXRUNTIME_LIB_DIR/libonnxruntime.so" install/lib
+  if [ -f "$SHERPA_ONNXRUNTIME_LIB_DIR/libonnxruntime4j_jni.so" ]; then
+    cp -fv "$SHERPA_ONNXRUNTIME_LIB_DIR/libonnxruntime4j_jni.so" install/lib
+  fi
 fi
 
 if [ $SHERPA_ONNX_ENABLE_RKNN == ON ]; then

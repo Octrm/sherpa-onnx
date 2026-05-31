@@ -81,9 +81,9 @@ elif [ -n "${SHERPA_ONNX_ONNXRUNTIME_ROOT:-}" ]; then
 elif [ ! -f $onnxruntime_version/jni/x86/libonnxruntime.so ]; then
   mkdir -p $onnxruntime_version
   pushd $onnxruntime_version
-  wget -c -q https://github.com/csukuangfj/onnxruntime-libs/releases/download/v${onnxruntime_version}/onnxruntime-android-${onnxruntime_version}.zip
-  unzip onnxruntime-android-${onnxruntime_version}.zip
-  rm onnxruntime-android-${onnxruntime_version}.zip
+  wget -c -q https://repo1.maven.org/maven2/com/microsoft/onnxruntime/onnxruntime-android/${onnxruntime_version}/onnxruntime-android-${onnxruntime_version}.aar
+  unzip onnxruntime-android-${onnxruntime_version}.aar
+  rm onnxruntime-android-${onnxruntime_version}.aar
   popd
 fi
 
@@ -143,6 +143,9 @@ cmake -DCMAKE_TOOLCHAIN_FILE="$ANDROID_NDK/build/cmake/android.toolchain.cmake" 
 make -j4
 make install/strip
 cp -fv "$SHERPA_ONNXRUNTIME_LIB_DIR/libonnxruntime.so" install/lib
+if [ -f "$SHERPA_ONNXRUNTIME_LIB_DIR/libonnxruntime4j_jni.so" ]; then
+  cp -fv "$SHERPA_ONNXRUNTIME_LIB_DIR/libonnxruntime4j_jni.so" install/lib
+fi
 rm -rf install/lib/pkgconfig
 
 if [ -f install/lib/libsherpa-onnx-c-api.so ]; then
